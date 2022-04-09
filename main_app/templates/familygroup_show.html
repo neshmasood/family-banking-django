@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Family Member Details</h1> -->
+
+    <!-- I have to come back to this. I want user name shown with whom the  is associated to -->
+    <div>
+        <div>
+            <h4>Name: {{ familygroup.name }}</h4>
+            <p>Description: {{ familygroup.description }}</p>
+            <p>Tasks:</p>
+            {% for task in familygroup.task_set.all %}
+                <p>{{ task.name }}</p>
+            {% empty %}
+                <p>This is person doesn't have any tasks assigned to them.</p>
+            {% endfor %}
+        </div>
+        <div>
+            <a href="{% url 'familygroups_update' familygroup.id %}">Edit</a>
+            <a href="{% url 'familygroups_delete' familygroup.id %}">Delete</a>
+        </div>
+    </div>
+
+{% endblock %} 

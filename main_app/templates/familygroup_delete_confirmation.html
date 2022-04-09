@@ -3,12 +3,12 @@
 {% block content %}
 
     <h3>Remove a family member from your account</h3>
-    <h6>Are you sure you want to remove "{{ family_group.name }}"?</h6>
+    <h6>Are you sure you want to remove "{{ familygroup.name }}"?</h6>
     
     <form method="post">
         {% csrf_token %}
         <input type="submit" value="Yes"/>
-        <a href="{% url 'family_groups_show' family_group.id %}">Cancel</a>
+        <a href="{% url 'familygroups_show' familygroup.id %}">Cancel</a>
     </form>
 
 {% endblock %}

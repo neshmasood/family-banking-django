@@ -132,32 +132,32 @@ def profile(request, username):
 
 # Families view function
 
-def family_group_index(request):
-    family_groups = FamilyGroup.objects.all()
-    return render(request, 'family_group_index.html', {'family_groups': family_groups})
+def familygroup_index(request):
+    familygroups = FamilyGroup.objects.all()
+    return render(request, 'familygroup_index.html', {'familygroups': familygroups})
 
-def family_group_show(request, family_group_id):
-    family_group = FamilyGroup.objects.get(id=family_group_id)
-    return render(request, 'family_show.html', {'family_group': family_group})
+def familygroup_show(request, familygroup_id):
+    familygroup = FamilyGroup.objects.get(id=familygroup_id)
+    return render(request, 'familygroup_show.html', {'familygroup': familygroup})
 
 
 
 class FamilyGroupCreate(CreateView):
     model = Task
     fields = ['name', 'description']
-    template_name = "family_group_create.html"
-    success_url = "/family_groups/"
+    template_name = "familygroup_create.html"
+    success_url = "/familygroups/"
 
 
 
 class FamilyGroupUpdate(UpdateView):
     model = Task
     fields = ['name', 'description']
-    template_name = "family_group_update.html"
-    success_url = "/family_groups/"
+    template_name = "familygroup_update.html"
+    success_url = "/familygroups/"
 
 
 class FamilyGroupDelete(DeleteView):
     model = Task
-    template_name = "family_group_delete_confirmation.html"
-    success_url = "/family_groups/"
+    template_name = "familygroup_delete_confirmation.html"
+    success_url = "/familygroups/"

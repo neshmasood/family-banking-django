@@ -30,7 +30,7 @@ class Task(models.Model):
     task_status = models.CharField(max_length=20, choices = STATUS_CHOICES)
     task_approval = models.BooleanField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    family_group = models.ManyToManyField(FamilyGroup) # M:M example
+    familygroups = models.ManyToManyField(FamilyGroup) # M:M example
    
     
 
