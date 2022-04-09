@@ -120,3 +120,9 @@ class TaskDelete(DeleteView):
     model = Task
     template_name = "task_delete_confirmation.html"
     success_url = "/tasks/"
+
+
+def profile(request, username):
+    user = User.objects.get(username=username)
+    tasks = Task.objects.filter(user=user)
+    return render(request, 'profile.html', {'username': username, 'tasks': tasks})
