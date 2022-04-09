@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import SignUpForm
-from .models import Task
+from .models import Task, FamilyGroup
 
 
 
@@ -90,6 +90,8 @@ class TaskList(TemplateView):
         return context 
 
 
+# Tasks CRUD
+
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
     fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'user']
@@ -126,3 +128,36 @@ def profile(request, username):
     user = User.objects.get(username=username)
     tasks = Task.objects.filter(user=user)
     return render(request, 'profile.html', {'username': username, 'tasks': tasks})
+
+
+# Families view function
+
+def family_group_index(request):
+    family_groups = FamilyGroup.objects.all()
+    return render(request, 'family_group_index.html', {'family_groups': family_groups})
+
+def family_group_show(request, family_group_id):
+    family_group = FamilyGroup.objects.get(id=family_group_id)
+    return render(request, 'family_show.html', {'family_group': family_group})
+
+
+
+class FamilyGroupCreate(CreateView):
+    model = Task
+    fields = ['name', 'description']
+    template_name = "family_group_create.html"
+    success_url = "/family_groups/"
+
+
+
+class FamilyUpdate(UpdateView):
+    model = Task
+    fields = ['name', 'description']
+    template_name = "family_group_update.html"
+    success_url = "/family_group"
+
+
+class FamilyDelete(DeleteView):
+    model = Task
+    template_name = "family_group_delete_confirmation.html"
+    success_url = "/family_groups/"
