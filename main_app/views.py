@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import View 
 from django.views.generic.base import TemplateView
+from django.views.generic import DetailView, CreateView, DeleteView, UpdateView
+from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect 
@@ -24,7 +26,7 @@ def login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect('/login.html/')
+                    return HttpResponseRedirect('/dashboard/')
                 else:
                     return render(request, 'login.html', {'form': form})
             else:
@@ -86,3 +88,35 @@ class TaskList(TemplateView):
             context['tasks'] = Task.objects.all()
             context['header'] = "Daily Tasks" # this is where we add the key into our context object for the view to use
         return context 
+
+
+class TaskCreate(LoginRequiredMixin, CreateView):
+    model = Task
+    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval']
+    template_name = "task_create.html"
+    success_url = '/'
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect('/tasks')
+
+
+class TaskDetail(DetailView): 
+    model = Task
+    template_name="task_detail.html"
+
+
+class TaskUpdate(UpdateView):
+    model = Task
+    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval']
+    template_name = "task_update.html"
+    # success_url = "/tasks/"
+    def get_success_url(self):
+        return reverse('task_detail', kwargs={'pk': self.object.pk})
+
+
+class TaskDelete(DeleteView):
+    model = Task
+    template_name = "task_delete_confirmation.html"
+    success_url = "/tasks/"
