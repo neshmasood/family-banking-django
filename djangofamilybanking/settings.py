@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main_app',
-    'users',
 ]
 
 MIDDLEWARE = [
@@ -106,6 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -129,4 +130,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # LOGIN_URL = '/login/'
-AUTH_USER_MODEL = 'users.NewUser'
+# AUTH_USER_MODEL = 'main_app.NewUser'
+AUTH_USER_MODEL = 'main_app.NewUser'

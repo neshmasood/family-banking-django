@@ -8,7 +8,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import SignUpForm
+# from .forms import SignUpForm
+from .forms import NewUserCreationForm
 from .models import Task
 
 
@@ -49,7 +50,7 @@ def logout_view(request):
 
 def signup_view(request):
     if request.method == 'POST':
-        form = SignUpForm(request.POST)
+        form = NewUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
@@ -58,7 +59,7 @@ def signup_view(request):
             login(request, user)
             return redirect('/')
     else:
-        form = SignUpForm()
+        form = NewUserCreationForm()
     return render(request, 'signup.html', {'form': form})
 
 
