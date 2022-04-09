@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View 
+from django.views.generic.base import TemplateView
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -21,7 +22,7 @@ def login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect('/')
+                    return HttpResponseRedirect('/landing_page')
                 else:
                     return render(request, 'login.html', {'form': form})
             else:
@@ -42,5 +43,24 @@ def logout_view(request):
 
 
 
+def signup_view(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return redirect('/')
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
+
+
+
 
 # Create your views here.
+
+class Landing_Page(TemplateView): 
+    template_name = 'landing_page.html'
