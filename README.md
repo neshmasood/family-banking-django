@@ -11,6 +11,11 @@ Family Banking (FB) is a website to help families manage chores and allowances f
 |
 [Data ERD](https://github.com/neshmasood/family-banking-django/#erd)
 
+## ERD
+
+
+![Screen Shot 2022-04-09 at 2 13 10 AM](https://user-images.githubusercontent.com/92559697/162561330-94b8efc6-d37e-441a-bd7e-3197ae498d27.png)
+
 
 
 ## User Story
