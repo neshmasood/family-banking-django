@@ -9,7 +9,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import SignUpForm
-from .models import Task, FamilyGroup
+from .models import Task
 
 
 
@@ -94,7 +94,7 @@ class TaskList(TemplateView):
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'user']
+    fields = ['content', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'user']
     template_name = "task_create.html"
     success_url = '/'
     def form_valid(self, form):
@@ -111,7 +111,7 @@ class TaskDetail(DetailView):
 
 class TaskUpdate(UpdateView):
     model = Task
-    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'user']
+    fields = ['content', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'user']
     template_name = "task_update.html"
     # success_url = "/tasks/"
     def get_success_url(self):
@@ -132,32 +132,32 @@ def profile(request, username):
 
 # Families view function
 
-def familygroup_index(request):
-    familygroups = FamilyGroup.objects.all()
-    return render(request, 'familygroup_index.html', {'familygroups': familygroups})
+# def familygroup_index(request):
+#     familygroups = FamilyGroup.objects.all()
+#     return render(request, 'familygroup_index.html', {'familygroups': familygroups})
 
-def familygroup_show(request, familygroup_id):
-    familygroup = FamilyGroup.objects.get(id=familygroup_id)
-    return render(request, 'familygroup_show.html', {'familygroup': familygroup})
-
-
-
-class FamilyGroupCreate(CreateView):
-    model = Task
-    fields = ['name', 'description']
-    template_name = "familygroup_create.html"
-    success_url = "/familygroups/"
+# def familygroup_show(request, familygroup_id):
+#     familygroup = FamilyGroup.objects.get(id=familygroup_id)
+#     return render(request, 'familygroup_show.html', {'familygroup': familygroup})
 
 
 
-class FamilyGroupUpdate(UpdateView):
-    model = Task
-    fields = ['name', 'description']
-    template_name = "familygroup_update.html"
-    success_url = "/familygroups/"
+# class FamilyGroupCreate(CreateView):
+#     model = Task
+#     fields = ['name', 'description']
+#     template_name = "familygroup_create.html"
+#     success_url = "/familygroups/"
 
 
-class FamilyGroupDelete(DeleteView):
-    model = Task
-    template_name = "familygroup_delete_confirmation.html"
-    success_url = "/familygroups/"
+
+# class FamilyGroupUpdate(UpdateView):
+#     model = Task
+#     fields = ['name', 'description']
+#     template_name = "familygroup_update.html"
+#     success_url = "/familygroups/"
+
+
+# class FamilyGroupDelete(DeleteView):
+#     model = Task
+#     template_name = "familygroup_delete_confirmation.html"
+#     success_url = "/familygroups/"
