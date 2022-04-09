@@ -36,7 +36,18 @@ class Task(models.Model):
 
     def __str__(self):
         return self.name
-        # return str(self.item) + ": $" + str(self.price)
+        
 
     class Meta: 
         ordering = ['name']
+
+
+
+class Transaction(models.Model):
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    date = models.DateTimeField(default=timezone.now)
+    sending_user = models.ForeignKey(User, related_name='sending_user', on_delete=models.CASCADE)
+    receiving_user = models.ForeignKey(User, related_name='receiving_user', on_delete=models.CASCADE)
+
+    def __str__(self):
+         return ": $" + str(self.amount)
