@@ -1,12 +1,44 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import User, AbstractUser, AbstractBaseUser, PermissionsMixin
+from django.contrib.auth.models import AbstractUser, AbstractBaseUser, PermissionsMixin, BaseUserManager
 from django.utils import timezone   
 
 
 # Create your models here.
 
+class CustomAccountManager(BaseUserManager):
+    use_in_migrations = True
+    def create_superuser(self, email, user_name, first_name, password):
+        return self.create_user(email, user_name, first_name, password)
+    def create_user(self, email, user_name, first_name, password):
+        if not email:
+            raise ValueError(('You must provide an email address'))
+        email = self.normalize_email(email)
+        user = self.model(email=email, user_name=user_name, first_name=first_name)
+        user.set_password(password)
+        user.save()
+        return user
 
+
+class NewUser(AbstractUser, AbstractBaseUser, PermissionsMixin):
+    email = models.EmailField(('email address'), unique=True)
+    user_name = models.CharField(max_length=150, unique=True)
+    first_name = models.CharField(max_length=150, blank=True)
+    is_child = models.BooleanField('child_status',default=False)
+    is_parent = models.BooleanField('parent_status', default=False)
+    objects = CustomAccountManager()
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ['user_name', 'first_name']
+    def __str__(self):
+        return self.user_name
+
+# class Child(models.Model):
+#      user = models.OneToOneField('AUTH_USER_MODEL', on_delete=models.CASCADE, primary_key=True)
+     
+
+# class Parent(models.Model):
+#      user = models.OneToOneField('AUTH_USER_MODEL', on_delete=models.CASCADE, primary_key=True)
+     
+    
 
 
 
@@ -33,17 +65,17 @@ class Task(models.Model):
     description = models.CharField(max_length=200)
     task_status = models.CharField(max_length=20, choices = STATUS_CHOICES)
     task_approval = models.BooleanField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user_parent= models.ForeignKey(Parent, on_delete=models.CASCADE)
     # familygroups = models.ManyToManyField(FamilyGroup) # M:M example
    
     
 
     def __str__(self):
-        return self.name
+        return self.content
         
 
     class Meta: 
-        ordering = ['name']
+        ordering = ['content']
 
 
 
@@ -68,29 +100,15 @@ USER_TYPE_CHOICES = {
     
 }
 
-class User(AbstractUser):
-    is_child = models.BooleanField('child status', default=False)
-    is_parent = models.BooleanField('parent status', default=False)
-    user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
-    tasks = models.ManyToManyField(Task)
-    transactions = models.ManyToManyField(Transaction)
+# class User(AbstractUser):
+#     is_child = models.BooleanField('child status', default=False)
+#     is_parent = models.BooleanField('parent status', default=False)
+#     user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
+#     tasks = models.ManyToManyField(Task)
+#     transactions = models.ManyToManyField(Transaction)
 
 
 
-class NewUser(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(_('email address'), unique=True)
-    user_name = models.CharField(max_length=150, unique=True)
-    first_name = models.CharField(max_length=150, blank=True)
-    start_date = models.DateTimeField(default=timezone.now)
-    about = models.TextField(_(
-        'about'), max_length=500, blank=True)
-    is_child = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
-   
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['user_name', 'first_name']
-    def __str__(self):
-        return self.user_name
 
 
 
