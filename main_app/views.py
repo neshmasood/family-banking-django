@@ -109,7 +109,7 @@ class TaskDetail(DetailView):
 
 class TaskUpdate(UpdateView):
     model = Task
-    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval']
+    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'user']
     template_name = "task_update.html"
     # success_url = "/tasks/"
     def get_success_url(self):
