@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h3>Add a family member</h3>
+    <form class="family_group-table" action="" method="post">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+        </table>
+        <input type="submit" value="Submit!">
+        <a href="{% url 'dashboard' %}">Cancel</a>
+    </form>
+
+{% endblock %}

@@ -150,14 +150,14 @@ class FamilyGroupCreate(CreateView):
 
 
 
-class FamilyUpdate(UpdateView):
+class FamilyGroupUpdate(UpdateView):
     model = Task
     fields = ['name', 'description']
     template_name = "family_group_update.html"
-    success_url = "/family_group"
+    success_url = "/family_groups/"
 
 
-class FamilyDelete(DeleteView):
+class FamilyGroupDelete(DeleteView):
     model = Task
     template_name = "family_group_delete_confirmation.html"
     success_url = "/family_groups/"
