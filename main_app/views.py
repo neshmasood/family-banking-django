@@ -92,7 +92,7 @@ class TaskList(TemplateView):
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval']
+    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'user']
     template_name = "task_create.html"
     success_url = '/'
     def form_valid(self, form):
