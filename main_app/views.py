@@ -7,6 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import SignUpForm
+from .models import Task
 
 
 
@@ -63,5 +64,25 @@ def signup_view(request):
 
 # Create your views here.
 
-class Landing_Page(TemplateView): 
+class LandingPage(TemplateView): 
     template_name = 'landing_page.html'
+
+class Dashboard(TemplateView): 
+    template_name = 'dashboard.html'
+
+
+
+class TaskList(TemplateView):
+    template_name = 'tasklist.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        name = self.request.GET.get("name")
+        if name != None:
+            # .filter is the sql WHERE statement and name__icontains is doing a search for any name that contains the query param
+            context['tasks'] = Task.objects.filter(name_icontains=name)
+            context['header'] = f"Searching for {name}"
+        else:
+            context['tasks'] = Task.objects.all()
+            context['header'] = "Daily Tasks" # this is where we add the key into our context object for the view to use
+        return context 

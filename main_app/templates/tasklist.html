@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}
+List of Tasks
+{% endblock %}
+
+{% block content %}
+
+
+<h3>{{header}}</h3>
+    {% for task in tasks %}
+
+
+    <h6>Name: {{task.name}}</h6>
+    <h6>Amount: {{task.amount}} </h6>
+    <h6>Due Date: {{task.due_date}} </h6>
+    <h6>Description: {{task.description}} </h6>
+    <h6>Task Status: {{task.task_status}} </h6>
+    <h6>Task Approval: {{task.task_approval}} </h6>
+    
+
+    {% endfor %}
+
+{% endblock %}

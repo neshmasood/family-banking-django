@@ -4,6 +4,16 @@ from django.utils import timezone
 
 
 
+# Create your models here.
+
+# class FamilyGroup(models.Model):
+#     name = models.CharField(max_length=50),
+#     description = models.CharField(max_length=200)
+
+#     def __str__(self):
+#         return self.name
+
+
 STATUS_CHOICES = {
     ("Not yet started", "not yet started"), 
     ("Completed", "complete"), 
@@ -19,6 +29,7 @@ class Task(models.Model):
     description = models.CharField(max_length=200)
     task_status = models.CharField(max_length=20, choices = STATUS_CHOICES)
     task_approval = models.BooleanField()
+    # familygroup = models.ManyToManyField(FamilyGroup) # M:M example
    
     
 
