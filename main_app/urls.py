@@ -9,6 +9,10 @@ urlpatterns = [
     path('user/<username>/', views.profile, name='profile'),
     path('dashboard/', views.Dashboard.as_view(), name="dashboard"),
     path('tasks/', views.TaskList.as_view(), name="task_list"),
+     path('tasks/new/', views.TaskCreate.as_view(), name="task_create"),
+    path('tasks/<int:pk>/', views.TaskDetail.as_view(), name="task_detail"),
+    path('tasks/<int:pk>/update', views.TaskUpdate.as_view(), name="task_update"),
+    path('tasks/<int:pk>/delete', views.TaskDelete.as_view(), name="task_delete"),
     
   
 
