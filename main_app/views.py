@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View 
 from django.views.generic.base import TemplateView
+from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect 
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -22,7 +23,7 @@ def login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect('/landing_page')
+                    return HttpResponseRedirect('/login.html/')
                 else:
                     return render(request, 'login.html', {'form': form})
             else:
