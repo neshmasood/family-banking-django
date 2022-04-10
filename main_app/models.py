@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import User
 from django.utils import timezone
 
 
@@ -9,12 +9,12 @@ from django.utils import timezone
 
 
 
-# class FamilyGroup(models.Model):
-#     name = models.CharField(max_length=50),
-#     description = models.CharField(max_length=200)
+class FamilyGroup(models.Model):
+    name = models.CharField(max_length=50)
+    description = models.CharField(max_length=200)
 
-#     def __str__(self):
-#         return self.name
+    def __str__(self):
+        return self.name
 
 
 STATUS_CHOICES = {
@@ -26,7 +26,7 @@ STATUS_CHOICES = {
 
 
 class Task(models.Model):
-    content = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     due_date = models.DateTimeField()
     description = models.CharField(max_length=200)
@@ -49,8 +49,8 @@ class Task(models.Model):
 class Transaction(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     date = models.DateTimeField(default=timezone.now)
-    # sending_user = models.ForeignKey(User, related_name='sending_user', on_delete=models.CASCADE)
-    # receiving_user = models.ForeignKey(User, related_name='receiving_user', on_delete=models.CASCADE)
+    sending_user = models.ForeignKey(User, related_name='sending_user', on_delete=models.CASCADE)
+    receiving_user = models.ForeignKey(User, related_name='receiving_user', on_delete=models.CASCADE)
 
     # debit_amount = models.IntegerField()
     # credit_amount = models.IntegerField()
@@ -61,18 +61,9 @@ class Transaction(models.Model):
 
 
 
-USER_TYPE_CHOICES = {
-    ("chd", "children"), 
-    ("pt", "parent")
-    
-}
 
-class User(AbstractUser):
-    is_child = models.BooleanField('child status', default=False)
-    is_parent = models.BooleanField('parent status', default=False)
-    user_type = models.PositiveSmallIntegerField(choices=USER_TYPE_CHOICES)
-    tasks = models.ManyToManyField(Task)
-    transactions = models.ManyToManyField(Transaction)
+
+
 
 
 
