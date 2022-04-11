@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.views import View 
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, CreateView, DeleteView, UpdateView
@@ -6,14 +6,15 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect 
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import SignUpForm
-from .models import Task, FamilyGroup
+from .models import Task
 
 
 
 # django auth
+
+
 
 def login_view(request):
     # if POST, then authenticate the user (submitting the username and password)
@@ -38,28 +39,12 @@ def login_view(request):
         form = AuthenticationForm()
         return render(request, 'login.html', {'form': form})
 
-
-
-
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect('/')
 
 
 
-def signup_view(request):
-    if request.method == 'POST':
-        form = SignUpForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('/')
-    else:
-        form = SignUpForm()
-    return render(request, 'signup.html', {'form': form})
 
 
 
@@ -132,32 +117,71 @@ def profile(request, username):
 
 # Families view function
 
-def familygroup_index(request):
-    familygroups = FamilyGroup.objects.all()
-    return render(request, 'familygroup_index.html', {'familygroups': familygroups})
+# def familygroup_index(request):
+#     familygroups = FamilyGroup.objects.all()
+#     return render(request, 'familygroup_index.html', {'familygroups': familygroups})
 
-def familygroup_show(request, familygroup_id):
-    familygroup = FamilyGroup.objects.get(id=familygroup_id)
-    return render(request, 'familygroup_show.html', {'familygroup': familygroup})
-
-
-
-class FamilyGroupCreate(CreateView):
-    model = Task
-    fields = ['name', 'description']
-    template_name = "familygroup_create.html"
-    success_url = "/familygroups/"
+# def familygroup_show(request, familygroup_id):
+#     familygroup = FamilyGroup.objects.get(id=familygroup_id)
+#     return render(request, 'familygroup_show.html', {'familygroup': familygroup})
 
 
 
-class FamilyGroupUpdate(UpdateView):
-    model = Task
-    fields = ['name', 'description']
-    template_name = "familygroup_update.html"
-    success_url = "/familygroups/"
+# class FamilyGroupCreate(CreateView):
+#     model = Task
+#     fields = ['name', 'description']
+#     template_name = "familygroup_create.html"
+#     success_url = "/familygroups/"
 
 
-class FamilyGroupDelete(DeleteView):
-    model = Task
-    template_name = "familygroup_delete_confirmation.html"
-    success_url = "/familygroups/"
+
+# class FamilyGroupUpdate(UpdateView):
+#     model = Task
+#     fields = ['name', 'description']
+#     template_name = "familygroup_update.html"
+#     success_url = "/familygroups/"
+
+
+# class FamilyGroupDelete(DeleteView):
+#     model = Task
+#     template_name = "familygroup_delete_confirmation.html"
+#     success_url = "/familygroups/"
+
+
+
+#Parent User CRUD
+# class ParentDetail(DetailView): 
+#     model = Task
+#     template_name="parent_detail.html"
+
+
+#ChildrenInFamily CRUD
+# def childreninfamily_index(request):
+#     childreninfamilys = ChildrenInFamily.objects.all()
+#     return render(request, 'childreninfamily_index.html', {'childreninfamilys': childreninfamilys})
+
+# def childreninfamily_show(request, childreninfamily_id):
+#     childreninfamily = ChildrenInFamily.objects.get(id=childreninfamily_id)
+#     return render(request, 'childreninfamily_show.html', {'childreninfamily': childreninfamily})
+
+
+
+# class ChildrenInFamilyCreate(CreateView):
+#     model = User
+#     fields = ['parent', 'child']
+#     template_name = "childreninfamily_create.html"
+#     success_url = "/childreninfamily/"
+
+
+
+# class ChildrenInFamilyUpdate(UpdateView):
+#     model = User
+#     fields = ['parent', 'child']
+#     template_name = "childreninfamily_update.html"
+#     success_url = "/childreninfamily/"
+
+
+# class ChildrenInFamilyDelete(DeleteView):
+#     model = User
+#     template_name = "childreninfamily_delete_confirm.html"
+#     success_url = "/childreninfamily/"

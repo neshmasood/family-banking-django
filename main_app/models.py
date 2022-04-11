@@ -1,20 +1,134 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, BaseUserManager, AbstractUser, AbstractBaseUser
 from django.utils import timezone
-
+from django.urls import reverse
 
 # Create your models here.
 
+class CustomUserManager(BaseUserManager):
+    def create_user(self, email, user_name, first_name, password=None):
+        if not email:
+            raise ValueError('You must provide an email address')
+        email = self.normalize_email(email)
+        user = self.model(email=email, user_name=user_name, first_name=first_name)
+        user.set_password(password)
+        user.save()
+        return user
+
+
+# class User(AbstractBaseUser): 
+#     email = models.EmailField(max_length=250)
+#     # username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='Parent')
+#     first_name = models.CharField(max_length=50)
+#     last_name = models.CharField(max_length=50)
+#     unique_family_name = models.CharField(max_length=100)
+#     is_parent = models.BooleanField(default=False)
+#     is_active = models.BooleanField(default=True)
+#     is_child = models.BooleanField(default=False)
+#     objects = CustomUserManager()
+#     # REQUIRED_FIELDS = ['first_name', 'last_name', 'email', 'password1', 'password2' 'is_parent', 'is_child']
+
+#     def __str__(self): 
+#         return self.first_name
+    
+#     def get_absolute_url(self):
+#         return reverse('parent_detail',kwargs={'pk':self.pk})
+
+
+# class Child(AbstractBaseUser):
+#     email = models.EmailField('email address', max_length=250, unique=True)
+#     user_name = models.CharField(max_length=50, unique=True)
+#     first_name = models.CharField(max_length=50, blank=True)
+#     last_name = models.CharField(max_length=50, blank=True)
+#     unique_family_name = models.CharField(max_length=100)
+#     is_child = models.BooleanField(default=False)
+#     is_active = models.BooleanField(default=False)
+
+#     REQUIRED_FIELDS = ['user_name', 'first_name']
+#     def __str__(self):
+#         return self.first_name
+
+class ChildUser(AbstractBaseUser):
+    email = models.EmailField('email', max_length=250, unique=True)
+    username = models.CharField(max_length=50, unique=True)
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=50, blank=True)
+    family_key = models.CharField(max_length=100)
+    is_child = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
+    identifier = models.CharField(max_length=40, unique=True)
+    USERNAME_FIELD = 'identifier'
+
+    REQUIRED_FIELDS = ['email', 'username', 'first_name', 'family_key']
+    def __str__(self):
+        return self.first_name
+# class User(AbstractBaseUser):
+#     is_child = models.BooleanField(default=False)
+#     is_parent = models.BooleanField(default=False)
 
 
 
-
-class FamilyGroup(models.Model):
-    name = models.CharField(max_length=50)
-    description = models.CharField(max_length=200)
+class ParentUser(AbstractBaseUser):
+    email = models.EmailField(max_length=250)
+    username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='Parent')
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    unique_family_name = models.CharField(max_length=100)
+    family_children = models.ManyToManyField(ChildUser, through="ChildrenInFamily")
+    is_parent = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=False)
+    identifier = models.CharField(max_length=40, unique=True)
+    USERNAME_FIELD = 'identifier'
+    REQUIRED_FIELDS = ['email', 'username', 'first_name', 'unique_family_name']
 
     def __str__(self):
-        return self.name
+        return self.first_name
+    
+    # def get_absolute_url(self):
+    #     return reverse('parent_detail',kwargs={'pk':self.pk})
+    # def get_success_url(self):
+    #     return reverse('login/')
+
+
+# class Parent(models.Model):
+#     email = models.EmailField(max_length=250)
+#     username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='Parent')
+#     first_name = models.CharField(max_length=50)
+#     last_name = models.CharField(max_length=50)
+#     unique_family_name = models.CharField(max_length=100)
+#     family_children = models.ManyToManyField(Child, through="ChildrenInFamily")
+#     is_parent = models.BooleanField(default=False)
+#     is_active = models.BooleanField(default=False)
+
+#     def __str__(self):
+#         return self.first_name
+    
+#     def get_absolute_url(self):
+#         return reverse('parent_detail',kwargs={'pk':self.pk})
+
+# class ChildrenInFamily(models.Model):
+#     parent = models.ForeignKey(Parent, related_name="family_parent", on_delete=models.CASCADE)
+#     child = models.ForeignKey(Child, related_name="user_child_first_name",on_delete=models.CASCADE)
+
+#     def __str__(self):
+#         return self.child.first_name
+
+#     class Meta:
+#         unique_together = ('parent','child')  
+
+class ChildrenInFamily(models.Model):
+    parent = models.ForeignKey(ParentUser, related_name="family_parent", on_delete=models.CASCADE)
+    child = models.ForeignKey(ChildUser, related_name="user_child_first_name",on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.child.first_name
+
+    class Meta:
+        unique_together = ('parent','child')  
+
+
+
+
 
 
 STATUS_CHOICES = {
@@ -22,7 +136,6 @@ STATUS_CHOICES = {
     ("Completed", "complete"), 
     ("Incomplete", "incomplete")
 }
-
 
 
 class Task(models.Model):
@@ -35,7 +148,6 @@ class Task(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     # familygroups = models.ManyToManyField(FamilyGroup) # M:M example
    
-    
 
     def __str__(self):
         return self.name
@@ -43,7 +155,6 @@ class Task(models.Model):
 
     class Meta: 
         ordering = ['name']
-
 
 
 class Transaction(models.Model):
@@ -60,6 +171,9 @@ class Transaction(models.Model):
          return ": $" + str(self.amount)
 
 
+
+
+     
 
 
 
