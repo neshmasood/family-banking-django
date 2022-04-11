@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h3>List of Transactions</h3>
+
+    {% for transaction in transactions %}
+        <div>
+            <div>
+                <a href="{% url 'transactions_show' transaction.id %}">
+                    <p>Amount: ${{ transactions.amount }}</p>
+                </a>
+            </div>
+           
+        </div>
+        
+    {% endfor %}
+
+{% endblock %}
