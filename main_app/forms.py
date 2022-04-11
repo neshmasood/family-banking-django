@@ -24,14 +24,20 @@ from .models import ParentUser
       
 # Parent SignUp Form 
 class ParentSignUpForm(forms.Form):
-    class Meta():
-        model = ParentUser
+    email = forms.EmailField(max_length=250)
+    username = forms.CharField(max_length=50)
+    first_name = forms.CharField(max_length=50)
+    last_name = forms.CharField(max_length=50)
+    family_key = forms.CharField(max_length=100)
+    password1 = forms.CharField(max_length=150)
+    password2 = forms.CharField(max_length=150)
+   
     class Meta:
         model = ParentUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2')
-        widgets = {
-                'unique_family_name': forms.TextInput(attrs={'unique-family-name':'answer'})
-                }
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'family_key')
+        # widgets = {
+        #         'unique_family_name': forms.TextInput(attrs={'unique-family-name':'answer'})
+        #         }
 # Child SignUp Form
 class ChildSignUpForm(forms.Form):
     # class Meta():
@@ -41,9 +47,12 @@ class ChildSignUpForm(forms.Form):
     first_name = forms.CharField(max_length=50)
     last_name = forms.CharField(max_length=50)
     family_key = forms.CharField(max_length=100)
+    password1 = forms.CharField(max_length=150)
+    password2 = forms.CharField(max_length=150)
+
     class Meta:
         model = ChildUser
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2' 'family_key')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'family_key')
         # widgets = {
         #         'unique_family_name': forms.TextInput(attrs={'unique-family-name':'answer'})
         #         }

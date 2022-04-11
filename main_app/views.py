@@ -9,12 +9,11 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ChildSignUpForm, ParentSignUpForm
-from .models import Task
+from .models import Task, ParentUser
 
 
 
 # django auth
-
 
 
 def login_view(request):
@@ -55,11 +54,11 @@ def parent_signup_view(request):
             user = form.save()
             user.is_parent = True
             user.save()
-
-#             registered = True
-#             username = ParentSignUpForm.cleaned_data.get('username')
-#             raw_password = ParentSignUpForm.cleaned_data.get('password1')
-#             user = authenticate(username=username, password=raw_password)
+            
+            # registered = True
+            # username = ParentSignUpForm.cleaned_data.get('username')
+            # raw_password = ParentSignUpForm.cleaned_data.get('password1')
+            # user = authenticate(username=username, password=raw_password)
             login(request, user)
             return HttpResponseRedirect('/login/')
         else:
@@ -71,7 +70,6 @@ def parent_signup_view(request):
 
         
 
-
 def child_signup_view(request):
 #     # user_type = 'Child'
 #     # registered= False
@@ -81,13 +79,7 @@ def child_signup_view(request):
         if form.is_valid():
             user = form.save()
             user.is_child = True
-            user.save()
-           
-
-#             registered = True
-#             username = ChildSignUpForm.cleaned_data.get('username')
-#             raw_password = ChildSignUpForm.cleaned_data.get('password1')
-#             user = authenticate(username=username, password=raw_password)
+            # user.save()
             login(request, user)
             return HttpResponseRedirect('/login/')
         else:
@@ -96,7 +88,6 @@ def child_signup_view(request):
     else:
         form = ChildSignUpForm()
         return render(request,'child_signup.html',{'form': form})
-
 
 
 
@@ -161,7 +152,7 @@ class TaskDelete(DeleteView):
 
 
 def profile(request, username):
-    user = User.objects.get(username=username)
+    user = ParentUser.objects.get(username=username)
     tasks = Task.objects.filter(user=user)
     return render(request, 'profile.html', {'username': username, 'tasks': tasks})
 
