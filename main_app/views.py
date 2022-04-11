@@ -5,9 +5,10 @@ from django.views.generic import DetailView, CreateView, DeleteView, UpdateView
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse, HttpResponseRedirect 
+from django.http import HttpResponseRedirect 
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import ChildSignUpForm, ParentSignUpForm
 from .models import Task
 
 
@@ -44,7 +45,57 @@ def logout_view(request):
     return HttpResponseRedirect('/')
 
 
+def parent_signup_view(request):
+    # user_type = 'Parent'
+    # registered= False
+    if request.method == "POST":
+       
+        form = ParentSignUpForm(data = request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.is_parent = True
+            user.save()
 
+#             registered = True
+#             username = ParentSignUpForm.cleaned_data.get('username')
+#             raw_password = ParentSignUpForm.cleaned_data.get('password1')
+#             user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return HttpResponseRedirect('/login/')
+        else:
+            form = ParentSignUpForm()
+            return render(request, 'parent_signup.html', {'form': form})
+    else:
+        form = ParentSignUpForm()
+        return render(request,'parent_signup.html',{'form': form})
+
+        
+
+
+def child_signup_view(request):
+#     # user_type = 'Child'
+#     # registered= False
+    if request.method == "POST":
+       
+        form = ChildSignUpForm(data = request.POST)
+        if form.is_valid():
+            user = form.save()
+            user.is_child = True
+            user.save()
+           
+
+#             registered = True
+#             username = ChildSignUpForm.cleaned_data.get('username')
+#             raw_password = ChildSignUpForm.cleaned_data.get('password1')
+#             user = authenticate(username=username, password=raw_password)
+            login(request, user)
+            return HttpResponseRedirect('/login/')
+        else:
+            form = ChildSignUpForm()
+            return render(request, 'child_signup.html', {'form': form})
+    else:
+        form = ChildSignUpForm()
+        return render(request,'child_signup.html',{'form': form})
 
 
 
