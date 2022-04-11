@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ChildSignUpForm, ParentSignUpForm
-from .models import Task, ParentUser
+from .models import Task, FamilyGroup
 
 
 
@@ -154,71 +154,38 @@ def profile(request, username):
 
 # Families view function
 
-# def familygroup_index(request):
-#     familygroups = FamilyGroup.objects.all()
-#     return render(request, 'familygroup_index.html', {'familygroups': familygroups})
+def familygroup_index(request):
+    familygroups = FamilyGroup.objects.all()
+    return render(request, 'familygroup_index.html', {'familygroups': familygroups})
 
-# def familygroup_show(request, familygroup_id):
-#     familygroup = FamilyGroup.objects.get(id=familygroup_id)
-#     return render(request, 'familygroup_show.html', {'familygroup': familygroup})
-
-
-
-# class FamilyGroupCreate(CreateView):
-#     model = Task
-#     fields = ['name', 'description']
-#     template_name = "familygroup_create.html"
-#     success_url = "/familygroups/"
+def familygroup_show(request, familygroup_id):
+    familygroup = FamilyGroup.objects.get(id=familygroup_id)
+    return render(request, 'familygroup_show.html', {'familygroup': familygroup})
 
 
 
-# class FamilyGroupUpdate(UpdateView):
-#     model = Task
-#     fields = ['name', 'description']
-#     template_name = "familygroup_update.html"
-#     success_url = "/familygroups/"
-
-
-# class FamilyGroupDelete(DeleteView):
-#     model = Task
-#     template_name = "familygroup_delete_confirmation.html"
-#     success_url = "/familygroups/"
+class FamilyGroupCreate(CreateView):
+    model = Task
+    fields = ['name', 'description']
+    template_name = "familygroup_create.html"
+    success_url = "/familygroups/"
 
 
 
-#Parent User CRUD
-# class ParentDetail(DetailView): 
-#     model = Task
-#     template_name="parent_detail.html"
+class FamilyGroupUpdate(UpdateView):
+    model = Task
+    fields = ['name', 'description']
+    template_name = "familygroup_update.html"
+    success_url = "/familygroups/"
 
 
-#ChildrenInFamily CRUD
-# def childreninfamily_index(request):
-#     childreninfamilys = ChildrenInFamily.objects.all()
-#     return render(request, 'childreninfamily_index.html', {'childreninfamilys': childreninfamilys})
-
-# def childreninfamily_show(request, childreninfamily_id):
-#     childreninfamily = ChildrenInFamily.objects.get(id=childreninfamily_id)
-#     return render(request, 'childreninfamily_show.html', {'childreninfamily': childreninfamily})
+class FamilyGroupDelete(DeleteView):
+    model = Task
+    template_name = "familygroup_delete_confirmation.html"
+    success_url = "/familygroups/"
 
 
 
-# class ChildrenInFamilyCreate(CreateView):
-#     model = User
-#     fields = ['parent', 'child']
-#     template_name = "childreninfamily_create.html"
-#     success_url = "/childreninfamily/"
 
 
 
-# class ChildrenInFamilyUpdate(UpdateView):
-#     model = User
-#     fields = ['parent', 'child']
-#     template_name = "childreninfamily_update.html"
-#     success_url = "/childreninfamily/"
-
-
-# class ChildrenInFamilyDelete(DeleteView):
-#     model = User
-#     template_name = "childreninfamily_delete_confirm.html"
-#     success_url = "/childreninfamily/"
