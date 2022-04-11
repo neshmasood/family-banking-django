@@ -12,8 +12,10 @@ class CustomUserManager(BaseUserManager):
         email = self.normalize_email(email)
         user = self.model(email=email, user_name=user_name, first_name=first_name)
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
+
+  
 
 
 # class User(AbstractBaseUser): 
@@ -49,15 +51,17 @@ class CustomUserManager(BaseUserManager):
 #         return self.first_name
 
 class ChildUser(AbstractBaseUser):
-    email = models.EmailField('email', max_length=250, unique=True)
+    email = models.EmailField(max_length=250, unique=True)
     username = models.CharField(max_length=50, unique=True)
-    first_name = models.CharField(max_length=50, blank=True)
+    first_name = models.CharField('first_name', max_length=50, blank=True)
     last_name = models.CharField(max_length=50, blank=True)
     family_key = models.CharField(max_length=100)
     is_child = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     identifier = models.CharField(max_length=40, unique=True)
-    USERNAME_FIELD = 'identifier'
+
+    objects = CustomUserManager()
+    USERNAME_FIELD = 'first_name'
 
     REQUIRED_FIELDS = ['email', 'username', 'first_name', 'family_key']
     def __str__(self):
@@ -71,15 +75,18 @@ class ChildUser(AbstractBaseUser):
 class ParentUser(AbstractBaseUser):
     email = models.EmailField(max_length=250)
     username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='Parent')
-    first_name = models.CharField(max_length=50)
+    first_name = models.CharField('first_name', max_length=50)
     last_name = models.CharField(max_length=50)
-    unique_family_name = models.CharField(max_length=100)
+    family_key = models.CharField(max_length=100)
     family_children = models.ManyToManyField(ChildUser, through="ChildrenInFamily")
     is_parent = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     identifier = models.CharField(max_length=40, unique=True)
-    USERNAME_FIELD = 'identifier'
-    REQUIRED_FIELDS = ['email', 'username', 'first_name', 'unique_family_name']
+
+    objects = CustomUserManager()
+
+    USERNAME_FIELD = 'first_name'
+    REQUIRED_FIELDS = ['email', 'username', 'first_name', 'family_key']
 
     def __str__(self):
         return self.first_name
@@ -121,7 +128,7 @@ class ChildrenInFamily(models.Model):
     child = models.ForeignKey(ChildUser, related_name="user_child_first_name",on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.child.first_name
+        return self.parent
 
     class Meta:
         unique_together = ('parent','child')  

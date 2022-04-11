@@ -5,7 +5,7 @@
 {% if errors %}
 <p style="color: red;">{{errors}}</p>
 {% endif %}
-  <h2>Sign up</h2>
+  <h2>Parent Sign up form</h2>
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
