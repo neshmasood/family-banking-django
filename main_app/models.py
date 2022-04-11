@@ -15,45 +15,11 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-  
-
-
-# class User(AbstractBaseUser): 
-#     email = models.EmailField(max_length=250)
-#     # username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='Parent')
-#     first_name = models.CharField(max_length=50)
-#     last_name = models.CharField(max_length=50)
-#     unique_family_name = models.CharField(max_length=100)
-#     is_parent = models.BooleanField(default=False)
-#     is_active = models.BooleanField(default=True)
-#     is_child = models.BooleanField(default=False)
-#     objects = CustomUserManager()
-#     # REQUIRED_FIELDS = ['first_name', 'last_name', 'email', 'password1', 'password2' 'is_parent', 'is_child']
-
-#     def __str__(self): 
-#         return self.first_name
-    
-#     def get_absolute_url(self):
-#         return reverse('parent_detail',kwargs={'pk':self.pk})
-
-
-# class Child(AbstractBaseUser):
-#     email = models.EmailField('email address', max_length=250, unique=True)
-#     user_name = models.CharField(max_length=50, unique=True)
-#     first_name = models.CharField(max_length=50, blank=True)
-#     last_name = models.CharField(max_length=50, blank=True)
-#     unique_family_name = models.CharField(max_length=100)
-#     is_child = models.BooleanField(default=False)
-#     is_active = models.BooleanField(default=False)
-
-#     REQUIRED_FIELDS = ['user_name', 'first_name']
-#     def __str__(self):
-#         return self.first_name
 
 class ChildUser(AbstractBaseUser):
     email = models.EmailField(max_length=250, unique=True)
     username = models.CharField(max_length=50, unique=True)
-    first_name = models.CharField('first_name', max_length=50, blank=True)
+    first_name = models.CharField( max_length=50, blank=True)
     last_name = models.CharField(max_length=50, blank=True)
     family_key = models.CharField(max_length=100)
     is_child = models.BooleanField(default=False)
@@ -61,31 +27,26 @@ class ChildUser(AbstractBaseUser):
     identifier = models.CharField(max_length=40, unique=True)
 
     objects = CustomUserManager()
-    USERNAME_FIELD = 'first_name'
+    USERNAME_FIELD = 'identifier'
 
     REQUIRED_FIELDS = ['email', 'username', 'first_name', 'family_key']
     def __str__(self):
         return self.first_name
-# class User(AbstractBaseUser):
-#     is_child = models.BooleanField(default=False)
-#     is_parent = models.BooleanField(default=False)
-
 
 
 class ParentUser(AbstractBaseUser):
     email = models.EmailField(max_length=250)
     username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='Parent')
-    first_name = models.CharField('first_name', max_length=50)
+    first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     family_key = models.CharField(max_length=100)
-    family_children = models.ManyToManyField(ChildUser, through="ChildrenInFamily")
     is_parent = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     identifier = models.CharField(max_length=40, unique=True)
 
     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'first_name'
+    USERNAME_FIELD = 'identifier'
     REQUIRED_FIELDS = ['email', 'username', 'first_name', 'family_key']
 
     def __str__(self):
@@ -96,45 +57,17 @@ class ParentUser(AbstractBaseUser):
     # def get_success_url(self):
     #     return reverse('login/')
     
-class ChildrenInFamily(models.Model):
-    parent = models.ForeignKey(ParentUser, related_name="family_parent", on_delete=models.CASCADE)
-    child = models.ForeignKey(ChildUser, related_name="user_child_first_name",on_delete=models.CASCADE)
+ 
+
+class FamilyGroup(models.Model):
+    name = models.CharField(max_length=150)
+    description = models.CharField(max_length=200)
+    family_key = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.parent
+        return self.name
 
-    class Meta:
-        unique_together = ('parent','child')  
-
-# class Parent(models.Model):
-#     email = models.EmailField(max_length=250)
-#     username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='Parent')
-#     first_name = models.CharField(max_length=50)
-#     last_name = models.CharField(max_length=50)
-#     family_key = models.CharField(max_length=100)
-#     family_children = models.ManyToManyField(ChildUser, related_name="parents", through="ChildrenInFamily")
-#     is_parent = models.BooleanField(default=False)
-#     is_active = models.BooleanField(default=False)
-
-#     def __str__(self):
-#         return self.first_name
-    
-#     def get_absolute_url(self):
-#         return reverse('parent_detail',kwargs={'pk':self.pk})
-
-# class ChildrenInFamily(models.Model):
-#     parent = models.ForeignKey(Parent, related_name="family_parent", on_delete=models.CASCADE)
-#     child = models.ForeignKey(Child, related_name="user_child_first_name",on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return self.child.first_name
-
-#     class Meta:
-#         unique_together = ('parent','child')  
-
-
-
-
+ 
 
 STATUS_CHOICES = {
     ("Not yet started", "not yet started"), 
