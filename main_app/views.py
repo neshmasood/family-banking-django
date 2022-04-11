@@ -54,11 +54,6 @@ def parent_signup_view(request):
             user = form.save()
             user.is_parent = True
             user.save()
-            
-            # registered = True
-            # username = ParentSignUpForm.cleaned_data.get('username')
-            # raw_password = ParentSignUpForm.cleaned_data.get('password1')
-            # user = authenticate(username=username, password=raw_password)
             login(request, user)
             return HttpResponseRedirect('/login/')
         else:
@@ -79,7 +74,7 @@ def child_signup_view(request):
         if form.is_valid():
             user = form.save()
             user.is_child = True
-            # user.save()
+            user.save()
             login(request, user)
             return HttpResponseRedirect('/login/')
         else:
@@ -152,7 +147,7 @@ class TaskDelete(DeleteView):
 
 
 def profile(request, username):
-    user = ParentUser.objects.get(username=username)
+    user = User.objects.get(username=username)
     tasks = Task.objects.filter(user=user)
     return render(request, 'profile.html', {'username': username, 'tasks': tasks})
 
