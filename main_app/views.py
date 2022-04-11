@@ -9,7 +9,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import ChildSignUpForm, ParentSignUpForm
-from .models import Task, FamilyGroup
+from .models import Task, FamilyGroup, Transaction
 
 
 
@@ -183,6 +183,42 @@ class FamilyGroupDelete(DeleteView):
     model = Task
     template_name = "familygroup_delete_confirmation.html"
     success_url = "/familygroups/"
+
+
+
+#Transaction views
+def transactions_index(request):
+    transactions = Transaction.objects.all()
+    return render(request, 'transaction_index.html', {'transactions': transactions})
+
+def transactions_show(request, transaction_id):
+    transaction = Transaction.objects.get(id=transaction_id)
+    return render(request, 'transaction_show.html', {'transaction': transaction})
+
+
+#Transaction CRUD
+class Transaction_Create(CreateView):
+    model = Transaction
+    fields = '__all__'
+    template_name = "transaction_create.html"
+    success_url = '/transactions'
+
+
+
+class Transaction_Update(UpdateView):
+    model = Transaction
+    fields = ['amount', 'date']
+    template_name = "transaction_update.html"
+    success_url = '/transactions'
+
+
+
+class Transaction_Delete(DeleteView):
+    model = Transaction
+    template_name = "transaction_confirm_delete.html"
+    success_url = '/transactions'
+
+
 
 
 
