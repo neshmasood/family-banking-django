@@ -66,8 +66,6 @@ def parent_signup_view(request):
         
 
 def child_signup_view(request):
-#     # user_type = 'Child'
-#     # registered= False
     if request.method == "POST":
        
         form = ChildSignUpForm(data = request.POST)
