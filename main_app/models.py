@@ -95,15 +95,24 @@ class ParentUser(AbstractBaseUser):
     #     return reverse('parent_detail',kwargs={'pk':self.pk})
     # def get_success_url(self):
     #     return reverse('login/')
+    
+class ChildrenInFamily(models.Model):
+    parent = models.ForeignKey(ParentUser, related_name="family_parent", on_delete=models.CASCADE)
+    child = models.ForeignKey(ChildUser, related_name="user_child_first_name",on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.parent
+
+    class Meta:
+        unique_together = ('parent','child')  
 
 # class Parent(models.Model):
 #     email = models.EmailField(max_length=250)
 #     username = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True, related_name='Parent')
 #     first_name = models.CharField(max_length=50)
 #     last_name = models.CharField(max_length=50)
-#     unique_family_name = models.CharField(max_length=100)
-#     family_children = models.ManyToManyField(Child, through="ChildrenInFamily")
+#     family_key = models.CharField(max_length=100)
+#     family_children = models.ManyToManyField(ChildUser, related_name="parents", through="ChildrenInFamily")
 #     is_parent = models.BooleanField(default=False)
 #     is_active = models.BooleanField(default=False)
 
@@ -123,15 +132,7 @@ class ParentUser(AbstractBaseUser):
 #     class Meta:
 #         unique_together = ('parent','child')  
 
-class ChildrenInFamily(models.Model):
-    parent = models.ForeignKey(ParentUser, related_name="family_parent", on_delete=models.CASCADE)
-    child = models.ForeignKey(ChildUser, related_name="user_child_first_name",on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.parent
-
-    class Meta:
-        unique_together = ('parent','child')  
 
 
 
@@ -150,7 +151,8 @@ class Task(models.Model):
     task_status = models.CharField(max_length=20, choices = STATUS_CHOICES)
     task_approval = models.BooleanField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # familygroups = models.ManyToManyField(FamilyGroup) # M:M example
+    # familygroup = models.ForeignKey(FamilyGroup, on_delete=models.CASCADE) 
+    #childuser =  models.ManyToManyField(ChildUser) # M:M example
    
 
     def __str__(self):
