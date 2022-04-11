@@ -22,7 +22,11 @@ urlpatterns = [
     path('familygroups/create/', views.FamilyGroupCreate.as_view(), name='familygroups_create'),
     path('familygroups/<int:pk>/update/', views.FamilyGroupUpdate.as_view(), name='familygroups_update'),
     path('familygroups/<int:pk>/delete/', views.FamilyGroupDelete.as_view(), name='familygroups_delete'),
+    path('transactions/', views.transactions_index, name='transactions_index'),
+    path('transactions/<int:transaction_id>', views.transactions_show, name='transactions_show'),
+    path('transactions/create/', views.Transaction_Create.as_view(), name='transactions_create'),
+    path('transactions/<int:pk>/update/', views.Transaction_Update.as_view(), name='transactions_update'),
+    path('transactions/<int:pk>/delete/', views.Transaction_Delete.as_view(), name='transactions_delete'),
 
- 
 
 ]
