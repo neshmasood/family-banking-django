@@ -84,14 +84,12 @@ class Task(models.Model):
     task_status = models.CharField(max_length=20, choices = STATUS_CHOICES)
     task_approval = models.BooleanField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # familygroup = models.ForeignKey(FamilyGroup, on_delete=models.CASCADE) 
-    #childuser =  models.ManyToManyField(ChildUser) # M:M example
+    familygroup = models.ForeignKey(FamilyGroup, on_delete=models.CASCADE) 
+    childuser =  models.ManyToManyField(ChildUser) # M:M example
    
-
     def __str__(self):
         return self.name
         
-
     class Meta: 
         ordering = ['name']
 
