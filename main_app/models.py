@@ -128,9 +128,6 @@ class ChildrenInFamily(models.Model):
 
 
 
-
-
-
 STATUS_CHOICES = {
     ("Not yet started", "not yet started"), 
     ("Completed", "complete"), 
