@@ -6,41 +6,77 @@
 <div class="card-body">
     <h3>{{ user.username }}'s Dashboard</h3>
 </div>
-<div class="container-fluid">
-    <div class="card">
-        <h6>List of Tasks</h6>
-        {% for task in tasks %}
-        <h6>Name: {{task.name}} </h6>
-        <h6>Amount: {{task.amount}} </h6>
-        <h6>Due Date: {{task.due_date}} </h6>
-        <h6>Task Status: {{task.task_status}} </h6>
-        <h6>Task Approval: {{task.task_approval}} </h6>
-        <p>Created by:
-            <a href="/user/{{ task.user.username }}">{{ task.user.username }}</a>
-        </p>
+
+<div class="row">
+
+    
+    <div class="col">
+        <div class="card-body">
+            <h5>Tasks</h5>
+        </div>
         
-        {% endfor %}
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Amount</th>
+                <th scope="col">Due Date & Time</th>
+                <th scope="col">Status</th>
+                <th scope="col">Approval</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+{% for task in tasks %}
+            <tr>
+                <td>{{task.name}}</td>
+                <td>${{task.amount}}</td>
+                <td>{{task.due_date}}</td>
+                <td>{{task.task_status}}</td>
+                <td>{{task.task_approval}}</td>
+                <td><a class="btn btn-primary" href="{% url 'task_update' task.pk %}">Edit</a></td>
+                <td><a class="btn btn-primary" href="{% url 'task_delete' task.pk %}">Delete</a></td>
+{% endfor %}                
+            </tr>
+
+            </tbody>
+          </table>
 
     </div>
-</div>
-<div class="menu-item">
-    <div class="menu-content">
-        <div class="separator mx-1 my-4"></div>
-    </div>
-</div>	
+    <div class="col">
+      
+        <div class="card-body">
+            <h5>Transactions</h5>
+        </div>
+     
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Amount</th>
+                <th scope="col">Date</th>
+                <th scope="col">Sending User</th>
+                <th scope="col">Recieving User</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+{% for transaction in transactions %}
+            <tr>
+                <td>${{transaction.amount}}</td>
+                <td>{{transaction.date}}</td>
+                <td>{{transaction.sending_user}}</td>
+                <td>{{transaction.receiving_user}}</td>
+                <td><a class="btn btn-primary" href="{% url 'transactions_update' transaction.pk %}">Edit</a></td>
+                <td><a class="btn btn-primary" href="{% url 'transactions_delete' transaction.pk %}">Delete</a></td>             
+                
+{% endfor %}                
+            </tr>
 
-<div class="container-fluid">
-    <div class="card">
-        <h6>My Family</h6>
-        <p></p>
-    </div>
-</div>
-<div class="menu-item">
-    <div class="menu-content">
-        <div class="separator mx-1 my-4"></div>
-    </div>
-</div>	
+            </tbody>
+          </table>
 
+    </div>
+  </div>
 
 
 

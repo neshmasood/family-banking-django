@@ -9,8 +9,9 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 # from .forms import ChildSignUpForm, ParentSignUpForm
-from .forms import SignUpForm
-from .models import Task, FamilyGroup, Transaction
+from main_app.forms import SignUpForm
+from main_app.models import Task, FamilyGroup, Transaction
+
 
 
 
@@ -256,6 +257,18 @@ class Transaction_Delete(DeleteView):
     template_name = "transaction_confirm_delete.html"
     success_url = '/transactions'
 
+
+
+def dashboard(request):
+    
+    transactions=Transaction.objects.all
+    tasks=Task.objects.all
+    
+    return render (request, 'dashboard.html', {
+        "transactions": transactions,
+        "tasks":tasks,
+
+    })
 
 
 

@@ -18,7 +18,7 @@
 <title>{% block title %}{% endblock %}</title>
 </head>
 <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed toolbar-enabled aside-fixed aside-default-enabled">
-    <div class="container-fluid">
+    <div class="container-fluid px-4">
         <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="#">FBS</a>
@@ -81,11 +81,12 @@
                 </div>
             </div>
           </nav>
-        
+          
+          {% block content %} 
+      
+          {% endblock %}
     </div>
 
-    {% block content %}  
-    {% endblock %}
 </body>
 </html>
 

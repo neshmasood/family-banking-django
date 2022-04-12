@@ -1,17 +1,14 @@
 from django.urls import path
 from . import views
+from main_app.views import dashboard
 
 urlpatterns = [
     path('', views.LandingPage.as_view(), name="landing_page"),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup_view, name='signup'),
-    # path('childsignup/', views.child_signup_view, name='child_signup_form'),
-    # path('parentsignup/', views.parent_signup_view, name='parent_signup_form'),
-    # path('parents/<int:pk>/', views.ParentDetail.as_view(), name="parent_detail"),
-
     path('user/<username>/', views.profile, name='profile'),
-    path('dashboard/', views.Dashboard.as_view(), name="dashboard"),
+    path('dashboard/', dashboard, name="dashboard"),
     path('tasks/', views.TaskList.as_view(), name="task_list"),
     path('tasks/new/', views.TaskCreate.as_view(), name="task_create"),
     path('tasks/<int:pk>/', views.TaskDetail.as_view(), name="task_detail"),

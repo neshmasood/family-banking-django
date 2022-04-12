@@ -13,14 +13,11 @@ List of Tasks
     <a href="{% url 'task_detail' task.pk %}">
         <h6>Name: {{task.name}}</h6>
     </a>
-
-
-    <h6>Content: {{task.name}}</h6>
-    <h6>Amount: {{task.amount}} </h6>
-    <h6>Due Date: {{task.due_date}} </h6>
-    <h6>Description: {{task.description}} </h6>
-    <h6>Task Status: {{task.task_status}} </h6>
-    <h6>Task Approval: {{task.task_approval}} </h6>
+    <p>Amount: ${{task.amount}} </p>
+    <p>Due Date: {{task.due_date}} </p>
+    <p>Description: {{task.description}} </p>
+    <p>Task Status: {{task.task_status}} </p>
+    <p>Task Approval: {{task.task_approval}} </p>
      
 
     {% endfor %}

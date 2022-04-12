@@ -1,7 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h3>List of Family Members</h3>
+
+
+<div class="row">
+    <div class="col">
+        <div class="card-body">
+            <h5>List of Family Members</h5>
+        </div>
+        
+        <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+{% for familygroup in familygroups %}
+            <tr>
+                <td>{{familygroup.name}}</td>
+                <td>{{familygroup.description}}</td>
+                <td> <a class="btn btn-primary" href="{% url 'familygroups_show' familygroup.pk %}">Edit</a></td>
+                <td><a class="btn btn-primary" href="{% url 'familygroups_delete' familygroup.pk %}">Delete</a></td>
+{% endfor %}                
+            </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+
+
+
+
+
+
+
+    <h3>List of Family Members  </h3>
 
     {% for familygroup in familygroups %}
         <div>
@@ -16,3 +52,6 @@
     {% endfor %}
 
 {% endblock %}
+
+
+
