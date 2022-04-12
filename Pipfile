@@ -12,6 +12,7 @@ psycopg2 = "*"
 whitenoise = "*"
 setuptools = "*"
 psycopg2-binary = "*"
+django-crispy-forms = "*"
 
 [dev-packages]
 
