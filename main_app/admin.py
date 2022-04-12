@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Task, Transaction,  ChildUser, ParentUser, FamilyGroup
+from .models import Task, Transaction, FamilyGroup
 
 # Register your models here.
 
@@ -7,5 +7,6 @@ from .models import Task, Transaction,  ChildUser, ParentUser, FamilyGroup
 admin.site.register(Task)
 admin.site.register(Transaction)
 admin.site.register(FamilyGroup)
-admin.site.register(ChildUser)
-admin.site.register(ParentUser)
+
+# admin.site.register(ChildUser)
+# admin.site.register(ParentUser)

@@ -1,57 +1,58 @@
 from django.db import models
-from django.contrib.auth.models import User, BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import User
 from django.utils import timezone
 from django.urls import reverse
 
 # Create your models here.
 
-class CustomUserManager(BaseUserManager):
-    def create_user(self, email, user_name, first_name, password=None):
-        if not email:
-            raise ValueError('You must provide an email address')
-        email = self.normalize_email(email)
-        user = self.model(email=email, user_name=user_name, first_name=first_name)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+# class CustomUserManager(BaseUserManager):
+#     def create_user(self, email, user_name, first_name, password=None):
+#         if not email:
+#             raise ValueError('You must provide an email address')
+#         email = self.normalize_email(email)
+#         user = self.model(email=email, user_name=user_name, first_name=first_name)
+#         user.set_password(password)
+#         user.save(using=self._db)
+#         return user
 
 
-class ChildUser(AbstractBaseUser):
-    email = models.EmailField(max_length=250, unique=True)
-    username = models.CharField(max_length=50, unique=True)
-    first_name = models.CharField( max_length=50, blank=True)
-    last_name = models.CharField(max_length=50, blank=True)
-    family_key = models.CharField(max_length=100)
-    is_child = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
-    identifier = models.CharField(max_length=40, unique=True)
+# class ChildUser(AbstractBaseUser):
+#     email = models.EmailField(max_length=250, unique=True)
+#     username = models.CharField(max_length=50, unique=True)
+#     first_name = models.CharField( max_length=50, blank=True)
+#     last_name = models.CharField(max_length=50, blank=True)
+#     family_key = models.CharField(max_length=100)
+#     is_child = models.BooleanField(default=False)
+#     is_active = models.BooleanField(default=False)
+#     identifier = models.CharField(max_length=40, unique=True)
 
-    objects = CustomUserManager()
-    USERNAME_FIELD = 'identifier'
+#     objects = CustomUserManager()
+#     USERNAME_FIELD = 'identifier'
 
-    REQUIRED_FIELDS = ['email', 'username', 'first_name', 'family_key']
-    def __str__(self):
-        return self.first_name
+#     REQUIRED_FIELDS = ['email', 'username', 'first_name', 'family_key']
+#     def __str__(self):
+#         return self.first_name
 
 
-class ParentUser(AbstractBaseUser):
-    email = models.EmailField(max_length=250)
-    # username = models.CharField(max_length=50, unique=True)
-    username = models.OneToOneField(ChildUser, on_delete=models.CASCADE, primary_key=True, related_name='Parent')
-    first_name = models.CharField(max_length=50)
-    last_name = models.CharField(max_length=50)
-    family_key = models.CharField(max_length=100)
-    is_parent = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=False)
-    identifier = models.CharField(max_length=40, unique=True)
+# class ParentUser(AbstractBaseUser):
+#     id = models.BigIntegerField(primary_key=True)
+#     email = models.EmailField(max_length=250)
+#     username = models.CharField(max_length=50, unique=True)
+#     # username = models.OneToOneField(ChildUser, on_delete=models.CASCADE, primary_key=True, related_name='Parent')
+#     first_name = models.CharField(max_length=50)
+#     last_name = models.CharField(max_length=50)
+#     family_key = models.CharField(max_length=100)
+#     is_parent = models.BooleanField(default=False)
+#     is_active = models.BooleanField(default=False)
+#     identifier = models.CharField(max_length=40, unique=True)
 
-    objects = CustomUserManager()
+#     objects = CustomUserManager()
 
-    USERNAME_FIELD = 'identifier'
-    REQUIRED_FIELDS = ['email', 'username', 'first_name', 'family_key']
+#     USERNAME_FIELD = 'identifier'
+#     REQUIRED_FIELDS = ['email', 'username', 'first_name']
 
-    def __str__(self):
-        return self.first_name
+#     def __str__(self):
+#         return self.first_name
     
     # def get_absolute_url(self):
     #     return reverse('parent_detail',kwargs={'pk':self.pk})
@@ -84,9 +85,10 @@ class Task(models.Model):
     description = models.CharField(max_length=200)
     task_status = models.CharField(max_length=20, choices = STATUS_CHOICES)
     task_approval = models.BooleanField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # users = models.ManyToManyField(User, on_delete=models.CASCADE)
     familygroup = models.ForeignKey(FamilyGroup, on_delete=models.CASCADE) 
-    childuser =  models.ManyToManyField(ChildUser) # M:M example
+    # childuser =  models.ManyToManyField(ChildUser) # M:M example
    
     def __str__(self):
         return self.name
@@ -106,7 +108,7 @@ class Transaction(models.Model):
     # account_balance = models.IntegerField()
 
     def __str__(self):
-         return ": $" + str(self.amount)
+         return "$" + str(self.amount)
 
 
 

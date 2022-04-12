@@ -5,9 +5,9 @@ urlpatterns = [
     path('', views.LandingPage.as_view(), name="landing_page"),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
-    # path('signup/', views.signup_view, name='signup'),
-    path('childsignup/', views.child_signup_view, name='child_signup_form'),
-    path('parentsignup/', views.parent_signup_view, name='parent_signup_form'),
+    path('signup/', views.signup_view, name='signup'),
+    # path('childsignup/', views.child_signup_view, name='child_signup_form'),
+    # path('parentsignup/', views.parent_signup_view, name='parent_signup_form'),
     # path('parents/<int:pk>/', views.ParentDetail.as_view(), name="parent_detail"),
 
     path('user/<username>/', views.profile, name='profile'),
