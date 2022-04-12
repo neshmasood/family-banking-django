@@ -3,5 +3,5 @@
     {% csrf_token %}
     {{form.as_p}}
     <input type="submit" value="Update"/>
-    <a href="{% url 'transactions_update' %}">Cancel</a>
+    <a href="{% url 'transactions_index' %}">Cancel</a>
 </form>

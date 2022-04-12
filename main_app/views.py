@@ -74,7 +74,7 @@ def signup_view(request):
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
             login(request, user)
-            return HttpResponseRedirect('/login')
+            return HttpResponseRedirect('/dashboard')
     else:
         form = SignUpForm()
     return render(request, 'signup.html', {'form': form})
@@ -152,7 +152,7 @@ class TaskList(TemplateView):
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval']
+    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'familygroup']
     template_name = "task_create.html"
     success_url = '/'
     def form_valid(self, form):
@@ -169,7 +169,7 @@ class TaskDetail(DetailView):
 
 class TaskUpdate(UpdateView):
     model = Task
-    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'user']
+    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'familygroup']
     template_name = "task_update.html"
     # success_url = "/tasks/"
     def get_success_url(self):
@@ -196,12 +196,14 @@ def familygroup_index(request):
 
 def familygroup_show(request, familygroup_id):
     familygroup = FamilyGroup.objects.get(id=familygroup_id)
-    return render(request, 'familygroup_show.html', {'familygroup': familygroup})
+    transactions = Transaction.objects.filter(receiving_user=familygroup_id)
+    print(transactions)
+    return render(request, 'familygroup_show.html', {'familygroup': familygroup, 'transactions': transactions })
 
 
 
 class FamilyGroupCreate(CreateView):
-    model = Task
+    model = FamilyGroup
     fields = ['name', 'description']
     template_name = "familygroup_create.html"
     success_url = "/familygroups/"
@@ -209,14 +211,14 @@ class FamilyGroupCreate(CreateView):
 
 
 class FamilyGroupUpdate(UpdateView):
-    model = Task
+    model = FamilyGroup
     fields = ['name', 'description']
     template_name = "familygroup_update.html"
     success_url = "/familygroups/"
 
 
 class FamilyGroupDelete(DeleteView):
-    model = Task
+    model = FamilyGroup
     template_name = "familygroup_delete_confirmation.html"
     success_url = "/familygroups/"
 

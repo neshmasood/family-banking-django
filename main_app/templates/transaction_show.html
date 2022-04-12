@@ -2,25 +2,22 @@
 
 {% block content %}
 
-<!-- <section>
+<section>
     <div></div>
     <label class="t1">Transaction Details</label>
-    <table class="table1">
-        
-        <thead>
-            <tr>
-                <th>${{transaction.amount}}</th> -->
-                <!-- <th>No.</th>
-                <th>Name</th> -->
-                <!-- <th>Amount Debited</th>
-                <th>Amount Credited</th>
-                <th>Account Balance</th> -->
-            <!-- </tr>
-        </thead>
+  
+</a>
 
-    </table>
-    <label><a href="">Return to Dashboard</a></label>
-</section> -->
+
+<h6>Amount: {{transaction.amount}}</h6>
+
+<h6>Date: {{transaction.date}} </h6>
+
+    <div>
+        <a href="{% url 'transactions_update' transaction.pk %}">Update</a>
+        <a href="{% url 'transactions_delete' transaction.pk %}">Delete</a>
+    </div>
+</section>
 
 
 

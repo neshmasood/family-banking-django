@@ -1,4 +1,4 @@
-<!-- {% extends 'base.html' %}
+{% extends 'base.html' %}
 
 {% block content %}
     <h1>Update Family</h1>
@@ -9,7 +9,7 @@
             {{ form.as_table }}
         </table>
         <input type="submit" value="Update">
-        <a href="{% url 'familygroup_detail' familygroup.pk %}">Cancel</a>
+        <a href="{% url 'familygroups_show' familygroup.pk %}">Cancel</a>
     </form>
 
-{% endblock %} -->
+{% endblock %}

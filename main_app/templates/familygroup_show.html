@@ -14,6 +14,12 @@
             {% empty %}
                 <p>This is person doesn't have any tasks assigned to them.</p>
             {% endfor %}
+            <p>Transactions:</p>
+            {% for transaction in transactions %}
+                <p>{{ transaction.amount }}</p>
+            {% empty %}
+                <p>This is person doesn't have any transactions assigned to them.</p>
+            {% endfor %}
         </div>
         <div>
             <a href="{% url 'familygroups_update' familygroup.id %}">Edit</a>
@@ -21,4 +27,4 @@
         </div>
     </div>
 
-{% endblock %}  -->
+{% endblock %} 

@@ -9,9 +9,7 @@
     <h5>Description: {{task.description}} </h5>
     <h5>Task-Status: {{task.task_status}} </h5>
     <h5>Task-Approval: {{task.task_approval}} </h5>
-    <p>Created by:
-        <a href="/user/{{ task.user.username }}">{{ task.user.username }}</a>
-    </p>
+   
 </div>
 <div>
     <a href="{% url 'task_update' task.pk %}">Update</a>
