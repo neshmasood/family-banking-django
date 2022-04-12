@@ -45,24 +45,39 @@ def logout_view(request):
     return HttpResponseRedirect('/')
 
 
+# def signup_view(request):
+#     if request.method == 'POST':
+#         form = SignUpForm(request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             login(request, user)
+#             form.save()
+#             # username = form.cleaned_data.get('username')
+#             # raw_password = form.cleaned_data.get('password1')
+#             # user = authenticate(username=username, password=raw_password)
+#             login(request, user)
+#             return HttpResponseRedirect('/login')
+#         else:
+#             return render(request, 'signup.html', {'form': form})
+
+#     else:
+#         form = SignUpForm()
+#         return render(request, 'signup.html', {'form': form})
+
+
 def signup_view(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            login(request, user)
             form.save()
-            # username = form.cleaned_data.get('username')
-            # raw_password = form.cleaned_data.get('password1')
-            # user = authenticate(username=username, password=raw_password)
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
             login(request, user)
             return HttpResponseRedirect('/login')
-        else:
-            return render(request, 'signup.html', {'form': form})
-
     else:
         form = SignUpForm()
-        return render(request, 'signup.html', {'form': form})
+    return render(request, 'signup.html', {'form': form})
   
 
 
@@ -137,7 +152,7 @@ class TaskList(TemplateView):
 
 class TaskCreate(LoginRequiredMixin, CreateView):
     model = Task
-    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval', 'user']
+    fields = ['name', 'amount', 'due_date', 'description', 'task_status', 'task_approval']
     template_name = "task_create.html"
     success_url = '/'
     def form_valid(self, form):

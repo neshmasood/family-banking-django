@@ -84,9 +84,9 @@ class Task(models.Model):
     due_date = models.DateTimeField()
     description = models.CharField(max_length=200)
     task_status = models.CharField(max_length=20, choices = STATUS_CHOICES)
-    task_approval = models.BooleanField()
+    task_approval = models.BooleanField(null=False)
     # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    # users = models.ManyToManyField(User, on_delete=models.CASCADE)
+    users = models.ManyToManyField(User)
     familygroup = models.ForeignKey(FamilyGroup, on_delete=models.CASCADE) 
     # childuser =  models.ManyToManyField(ChildUser) # M:M example
    
