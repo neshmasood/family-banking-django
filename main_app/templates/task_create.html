@@ -6,8 +6,8 @@
 <form method="post">
     {% csrf_token %}
     {{form.as_p}}
-    <input type="submit" value="Submit" />
-    <a href="{% url 'dashboard' %}">Cancel</a>
+    <input class="btn btn-primary" type="submit" value="Create" />
+    <a class="btn btn-primary" href="{% url 'dashboard' %}">Cancel</a>
     
 </form>
 

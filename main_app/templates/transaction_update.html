@@ -1,7 +1,13 @@
-<h5>Update {{transaction.amount}}</h5>
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h5>Update ${{transaction.amount}}</h5>
 <form action="" method="post">
     {% csrf_token %}
     {{form.as_p}}
-    <input type="submit" value="Update"/>
-    <a href="{% url 'transactions_index' %}">Cancel</a>
+    <input class="btn btn-primary" type="submit" value="Update"/>
+    <a class="btn btn-primary" href="{% url 'dashboard' %}">Cancel</a>
 </form>
+
+{% endblock %}

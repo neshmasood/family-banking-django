@@ -3,12 +3,12 @@
 {% block content %}
 
     <h3>Remove a transaction</h3>
-    <h6>Are you sure you want to remove "{{ transaction.amount }}"?</h6>
+    <h6>Are you sure you want to remove "${{ transaction.amount }}"?</h6>
     
     <form method="post">
         {% csrf_token %}
-        <input type="submit" value="Yes"/>
-        <a href="{% url 'transactions_show' transaction.id %}">Cancel</a>
+        <input class="btn btn-primary" type="submit" value="Yes"/>
+        <a class="btn btn-primary" href="{% url 'transactions_show' transaction.id %}">Cancel</a>
     </form>
 
 {% endblock %}

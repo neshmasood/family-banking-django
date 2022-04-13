@@ -5,15 +5,61 @@ Family Banking System
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    <h5>Welcome to Family Banking. This is an app where you can setup a family account and manage tasks and allowance for your child(ren) </h5>
-    <p>Once, you have signed up, please log In to set your family account up and running!</p>
-</div>
 
-<div class="card">
-    <h6>Create an account using the link below!</h6>
-        <a class="" href="{% url 'signup' %}">SignUp</a> 
-</div>
+
+<div class="container">
+    <div class='row'>
+    </br>
+    </div>
+    <div class="row align-items-center">
+      <div class="col">
+        <h5>Welcome to Family Banking System </h5>
+        <p>This is an app where you can setup a family account and manage tasks and allowance for your child(ren).
+            Once, you have signed up you will be up and running!</p>
+        </div>
+      
+      <div class="col">
+
+        <div class='row'>
+        
+            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                  <div class="carousel-item active" data-bs-interval="1000">
+                    <img src="https://www.fremontbank.com/FremontBank/media/Images/Home/meet-fremont-bank.svg" class="d-block w-100" alt="...">
+                  </div>
+                  <div class="carousel-item" data-bs-interval="2000">
+                    <img src="http://resourcecenter.cuna.org/imartiges/cover_1542144395.jpg" class="d-block w-100" alt="...">
+                  </div>
+                  <div class="carousel-item">
+                    <img src="https://hermoney.com/wp-content/uploads/2021/10/cute-little-girl-holding-coin-of-money-and-put-in-pink-piggy-bank-with-blur-background-subject-is_t20_B8QV8K-840x487.jpg" class="d-block w-100" alt="...">
+                  </div>
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div>
+        
+        
+        </div>
+
+    </br>
+</br>
+
+        <h6>Create an account using the link below!</h6>
+        <a class="btn btn-primary" href="{% url 'signup' %}">SignUp</a> 
+      </div>
+    </div>
+  </div>
+
+
 
 
 {% endblock %}
+
+
+
